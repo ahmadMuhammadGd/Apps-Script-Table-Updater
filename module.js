@@ -1,42 +1,66 @@
 
+class Action {
+    constructor(updatedTable, updatedTableKey, updatingTable, updatingTableKey, updateOnIndexes, updateTables, mergeTables) {
+        this.updatedTable = updatedTable;
+        this.updatedTableKey = updatedTableKey;
+        this.updatingTable = updatingTable;
+        this.updatingTableKey = updatingTableKey;
+        this.updateOnIndexes = updateOnIndexes;
+        this.mergeTables = mergeTables;
+        this.updateTables = updateTables;
+    }
 
+    static action()
+    {
+        InputValidator.validateAndExecute(()=>
+        {
+            if (this.updateTables)
+            {
+                this.update()
+            }
+            if (this.mergeTables)
+            {
+                this.merge()
+            }
+        }
+        ,
+        this.updatedTable, this.updatingTable, this.updateOnIndexes
+        )
 
+    }
 
+    static update() 
+    {
+        const updatedTable = this.updatedTable;
+        const updatedTableKey = this.updatedTableKey;
+        const updatingTable = this.updatingTable;
+        const updatingTableKey = this.updatingTableKey;
+        const updateOnIndexes = this.updateOnIndexes;
 
-function update(arr1, arr2, onKey, attributes) {
-    validateAndExecute(() => {
+        for (let row in updatedTable)
+        {
+            const rowKey = row[updatedTableKey];
+            const match =  updatingTable.find(row => row[updatingTableKey] === rowKey);
 
-    }, arr1, arr2);
-}
-
-function insert(arr1, data) {
-    validateAndExecute(() => {
-        return([...arr1, ...data])
-    }, arr1, data);
-}
-
-function newRows(arr1, arr2, keyIndexs = [0, 0]) {
-    validateAndExecute(() => {
-
-    }, arr1, arr2);
-}
-
-
-
-const validateInputs = (...arrs) => {
-    let result = true;
-    for (const arr of arrs) {
-        result = result && isValidArr(arr);
-        if (!result) {
-            throw new Error(`${arr} is not a valid 2d array, all inner arrays should have the same length`);
+            if (match)
+            {
+                for (let atrIndex of updateOnIndexes)
+                {
+                    row[atrIndex[0]] = match[atrIndex[1]];
+                }
+            }
         }
     }
-    return result;
-};
 
-function validateAndExecute(func, ...args) {
-    if (!validateInputs(...args)) {
-        return;
+    static merge() 
+    {
+        const newRecords = this.getNewRecords();
+        this.updatedTable = this.updatedTable.concat(newRecords);
     }
-    func(...args);
+
+    static getNewRecords() 
+    {
+        const allUpdatedKeys = this.updatedTable.map(row => row[this.updatedTableKey]);
+        return this.updatingTable.filter(updatingRow => allUpdatedKeys.includes(updatingRow[this.updatingTableKey]));
+    }
 }
