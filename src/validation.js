@@ -10,7 +10,6 @@ class InputValidator {
             const odds = arr.filter(element => element.length !== arr[0].length);
             return odds.length === 0;
         }
-        return false;
     }
 
     static isInBoundaries(arr1, arr2, arrOfIndexes) {
