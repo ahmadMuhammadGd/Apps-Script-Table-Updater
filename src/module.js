@@ -22,9 +22,9 @@ class Action {
 
     exec()
     {
-        InputValidator.validateAndExecute(()=>
+        const validation = InputValidator.validateAndExecute(()=>
         {
-          console.log(`exec start\nMerge:${this.mergeTables}, update:${this.updateTables}...`)
+          console.log(this)
             if (this.updateTables)
             {
                 this.update()
@@ -33,10 +33,12 @@ class Action {
             {
                 this.merge()
             }
+            console.log(this)
         }
         ,
         this.updatedTable, this.updatingTable, this.updateOnIndexes
         )
+        return [this.updatedTable, validation]
     }
 
      update() 
@@ -64,17 +66,15 @@ class Action {
 
      merge() 
     {
-      console.log(this)
       const newRecords = this.getNewRecords();
       this.updatedTable.push(...newRecords);
       const temp = this.updatedTable.filter(row => row.some(cell => cell !== ''));
       this.updatedTable = temp
-      console.log(this)
     }
 
-  getNewRecords() {
-    const updatedKeys = new Set(this.updatedTable.map(row => row[this.updatedTableKey]));
-    const newRecords = this.updatingTable.filter(row => !updatedKeys.has(row[this.updatingTableKey]));
-    return newRecords;
-  }
+    getNewRecords() {
+      const updatedKeys = new Set(this.updatedTable.map(row => row[this.updatedTableKey]));
+      const newRecords = this.updatingTable.filter(row => !updatedKeys.has(row[this.updatingTableKey]));
+      return newRecords;
+    }
 }

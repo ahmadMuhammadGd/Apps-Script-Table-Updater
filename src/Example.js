@@ -1,16 +1,13 @@
+const updatingTableRange = 'B3:D';
+const updatedTableRange = 'F3:H';
+
 function func()
 {
-  const updatingTableRange = 'B3:D';
-  const updatedTableRange = 'F3:H';
-
   const sheet= SpreadsheetApp.getActiveSpreadsheet().getActiveSheet()
   const someUpdatingTable = sheet.getRange(updatingTableRange).getValues()
   const someUpdatedTable = sheet.getRange(updatedTableRange).getValues()
 
-  console.log(someUpdatedTable)
-  console.log(someUpdatingTable)
-
-  const updateInfo = 
+  let updateInfo = 
   {
     updatedTable: someUpdatedTable,
     updatedTableKey: 0,
@@ -22,10 +19,34 @@ function func()
   }
 
   const actionInstance = new Action(updateInfo);
-  actionInstance.exec(),
+  const res = actionInstance.exec();
 
-  console.log(
-    updateInfo.updatedTable
-  )
+  console.log(res)
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
