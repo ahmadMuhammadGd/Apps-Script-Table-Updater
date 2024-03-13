@@ -12,12 +12,12 @@ class Action {
      */
     constructor(params) {
         this.updatedTable = params.updatedTable;
-        this.updatedTableKey = params.updatedTableKey;
+        this.updatedTableKey = params.updatedTableKey || null;
         this.updatingTable = params.updatingTable;
-        this.updatingTableKey = params.updatingTableKey;
+        this.updatingTableKey = params.updatingTableKey || null;
         this.updateOnIndexes = params.updateOnIndexes;
-        this.mergeTables = params.mergeTables;
-        this.updateTables = params.updateTables;
+        this.mergeTables = params.mergeTables || false;
+        this.updateTables = params.updateTables || false;
     }
 
     exec()
