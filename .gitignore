@@ -1,3 +1,3 @@
-src/.clasp.json
-dockerfile
+.clasp.json
+Dockerfile
 docker-compose.yml

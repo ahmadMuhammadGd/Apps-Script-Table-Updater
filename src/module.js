@@ -38,7 +38,7 @@ class Action {
         ,
         this.updatedTable, this.updatingTable, this.updateOnIndexes
         )
-        return [this.updatedTable, validation]
+        return this.updatedTable
     }
 
      update() 
