@@ -1,0 +1,19 @@
+{
+  "name": "sql-merge-but-in-vanilla-javascript-for-apps-script-applications",
+  "version": "1.0.0",
+  "description": "to run the container in the interactive mode: ```sh #if docker isn't added to user group sudo docker-compose run app bash",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ahmadMuhammadGd/SQL-Merge-But-in-Vanilla-JavaScript-for-Apps-Script-Applications.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ahmadMuhammadGd/SQL-Merge-But-in-Vanilla-JavaScript-for-Apps-Script-Applications/issues"
+  },
+  "homepage": "https://github.com/ahmadMuhammadGd/SQL-Merge-But-in-Vanilla-JavaScript-for-Apps-Script-Applications#readme"
+}
