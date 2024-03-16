@@ -1,34 +1,33 @@
 # AppScript Update and Merge Module
 
-This module facilitates update and merge operations within the Google AppScript environment. It provides a class called `Action` that handles updating and merging of tables.
+This module facilitates update and merge operations within the Google AppScript environment. It provides a class called `TableUpdater` that handles updating and merging tables.
 
-## Action Class
+## TableUpdater Class
 
 ### Constructor
 
-#### Parameters:
-- `params`: An object containing the parameters for the action.
-  - `updatedTable`: The table to be updated.
-  - `updatedTableKey`: The key used to identify rows in the updated table.
-  - `updatingTable`: The table containing updates.
-  - `updatingTableKey`: The key used to match rows in the updating table.
-  - `updateOnIndexes`: An array of index pairs specifying which columns to update.
-  - `mergeTables` (optional, default: `false`): Indicates whether to merge new records from the updating table.
-  - `updateTables` (optional, default: `false`): Indicates whether to perform updates on the updated table.
+Create an instance of the `TableUpdater` class by passing the following object structure to its constructor:
 
+```javascript
+let updateInfo = {
+  outDatedTable: someoutDatedTable, // Data for the outdated table (without a header)
+  outDatedTableKey: 0, // Column index (0-based) of the key in the outdated table
+  upToDateTable: someupToDateTable, // Data for the up-to-date table (without a header)
+  upToDateTableKey: 0, // Column index (0-based) of the key in the up-to-date table
+  updateOnIndexes: [[1, 1], [2, 2]], // Array of index pairs specifying which columns to update
+  mergeTables: true, // Indicates whether to merge new records from the up-to-date table (default: false)
+  updateTables: true // Indicates whether to perform updates on the outdated table (default: false)
+};
+const updaterInstance = new TableUpdater(updateInfo);
+```
 ### Methods
 
 #### `exec()`
 Executes the update and merge operations based on the provided parameters.
+```JavaScript
+  const res = updaterInstance.exec();
+  //Returns: An array containing the updated table.
+```
 
-Returns: An array containing the updated table and validation result.
-
-#### `update()`
-Performs updates on the updated table using the updating table and specified columns.
-
-#### `merge()`
-Merges new records from the updating table into the updated table.
-
-#### `getNewRecords()`
-Retrieves new records from the updating table that are not present in the updated table.
-
+# Contributions
+> Feel free to adjust and expand upon these suggestions based on your specific requirements and preferences.
