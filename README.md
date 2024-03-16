@@ -29,5 +29,53 @@ Executes the update and merge operations based on the provided parameters.
   //Returns: An array containing the updated table.
 ```
 
-# Contributions
+## Example: Using TableUpdater Class
+
+Suppose we have two tables that need to be updated and merged:
+
+### UP TO DATE TABLE
+
+| id | name             | age |
+|----|------------------|-----|
+| 1  | john-updated-name | 30  |
+| 2  | alice            | 20  |
+```JavaScript
+[ [ 1, 'john-updated-name', 30 ],
+  [ 2, 'alice', 20 ], ]
+```
+
+### OUT DATED TABLE
+
+| id | name | age |
+|----|------|-----|
+| 3  | bob  | 20  |
+| 1  | john | 15  |
+``` JavaScript
+[ [ 3, 'bob', 20 ],
+  [ 1, 'john', 15 ], ]
+```
+
+We can use the `TableUpdater` class to update and merge these tables as follows:
+```JavaScript
+let updateInfo = {
+  outDatedTable: someOutDatedTable,
+  outDatedTableKey: 0,
+  upToDateTable: someUpToDateTable,
+  upToDateTableKey: 0,
+  updateOnIndexes: [[1, 1], [2, 2]],
+  mergeTables: true,
+  updateTables: true
+};
+
+const updaterInstance = new TableUpdater(updateInfo);
+const res = updaterInstance.exec();
+console.log(res);
+```
+#### The output
+``` JavaScript
+[ [ 3, 'bob', 20 ],
+  [ 1, 'john-updated-name', 30 ],
+  [ 2, 'alice', 20 ] ]
+```
+## Contributions
 > Feel free to adjust and expand upon these suggestions based on your specific requirements and preferences.
