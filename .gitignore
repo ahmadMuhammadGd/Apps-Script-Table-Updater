@@ -1,4 +1,4 @@
 .clasp.json
-Dockerfile
+dockerfile
 docker-compose.yml
-src\appsscript.json
+src/appsscript.json

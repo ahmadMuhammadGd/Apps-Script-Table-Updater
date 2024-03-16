@@ -1,20 +1,20 @@
-class Action {
+class TableUpdater {
     /**
      * Creates an instance of Action.
      * @param {Object} params - The parameters for the action.
-     * @param {Array} params.updatedTable - The table to be updated.
-     * @param {string} params.updatedTableKey - The key used to identify rows in the updated table.
-     * @param {Array} params.updatingTable - The table containing updates.
-     * @param {string} params.updatingTableKey - The key used to match rows in the updating table.
+     * @param {Array} params.outDatedTable - The table to be updated.
+     * @param {string} params.outDatedTableKey - The key used to identify rows in the updated table.
+     * @param {Array} params.upToDateTable - The table containing updates.
+     * @param {string} params.upToDateTableKey - The key used to match rows in the updating table.
      * @param {Array} params.updateOnIndexes - An array of index pairs specifying which columns to update.
      * @param {boolean} [params.mergeTables=false] - Indicates whether to merge new records from the updating table.
      * @param {boolean} [params.updateTables=false] - Indicates whether to perform updates on the updated table.
      */
     constructor(params) {
-        this.updatedTable = params.updatedTable;
-        this.updatedTableKey = params.updatedTableKey || null;
-        this.updatingTable = params.updatingTable;
-        this.updatingTableKey = params.updatingTableKey || null;
+        this.outDatedTable = params.outDatedTable;
+        this.outDatedTableKey = typeof params.upToDateTableKey !== 'undefined' ? params.upToDateTableKey : null;
+        this.upToDateTable = params.upToDateTable;
+        this.upToDateTableKey = typeof params.upToDateTableKey !== 'undefined' ? params.upToDateTableKey : null;
         this.updateOnIndexes = params.updateOnIndexes;
         this.mergeTables = params.mergeTables || false;
         this.updateTables = params.updateTables || false;
@@ -22,9 +22,8 @@ class Action {
 
     exec()
     {
-        const validation = InputValidator.validateAndExecute(()=>
+        InputValidator.validateAndExecute(()=>
         {
-          console.log(this)
             if (this.updateTables)
             {
                 this.update()
@@ -33,48 +32,44 @@ class Action {
             {
                 this.merge()
             }
-            console.log(this)
         }
         ,
-        this.updatedTable, this.updatingTable, this.updateOnIndexes
+        this.outDatedTable, this.upToDateTable, this.updateOnIndexes, this.upToDateTableKey, this.outDatedTableKey
         )
-        return this.updatedTable
+        return this.outDatedTable
     }
 
-     update() 
-    {
-        const updatedTable = this.updatedTable;
-        const updatedTableKey = this.updatedTableKey;
-        const updatingTable = this.updatingTable;
-        const updatingTableKey = this.updatingTableKey;
-        const updateOnIndexes = this.updateOnIndexes;
+  update() {
+      const outDatedTable = this.outDatedTable;
+      const outDatedTableKey = this.outDatedTableKey;
+      const upToDateTable = this.upToDateTable;
+      const upToDateTableKey = this.upToDateTableKey;
+      const updateOnIndexes = this.updateOnIndexes;
 
-        for (let row in updatedTable)
-        {
-            const rowKey = row[updatedTableKey];
-            const match =  updatingTable.find(row => row[updatingTableKey] === rowKey);
+      for (let outDatedRow of outDatedTable) {
+          const rowKey = outDatedRow[outDatedTableKey];
+          const match = upToDateTable.find(upToDateRow => upToDateRow[upToDateTableKey] === rowKey);
 
-            if (match)
-            {
-                for (let atrIndex of updateOnIndexes)
-                {
-                    row[atrIndex[0]] = match[atrIndex[1]];
-                }
-            }
-        }
-    }
+          if (match) {
+              for (let [upToDateKey, outDatedKey] of updateOnIndexes) {
+                  outDatedRow[upToDateKey] = match[outDatedKey];
+              }
+          }
+      }
+  }
+
 
      merge() 
     {
       const newRecords = this.getNewRecords();
-      this.updatedTable.push(...newRecords);
-      const temp = this.updatedTable.filter(row => row.some(cell => cell !== ''));
-      this.updatedTable = temp
+      this.outDatedTable.push(...newRecords);
+      const temp = this.outDatedTable.filter(row => row.some(cell => cell !== ''));
+      this.outDatedTable = temp
     }
 
     getNewRecords() {
-      const updatedKeys = new Set(this.updatedTable.map(row => row[this.updatedTableKey]));
-      const newRecords = this.updatingTable.filter(row => !updatedKeys.has(row[this.updatingTableKey]));
+      const updatedKeys = new Set(this.outDatedTable.map(row => row[this.outDatedTableKey]));
+      const newRecords = this.upToDateTable.filter(row => !updatedKeys.has(row[this.upToDateTableKey]));
       return newRecords;
     }
 }

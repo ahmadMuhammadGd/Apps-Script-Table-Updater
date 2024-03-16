@@ -23,7 +23,7 @@ class InputValidator {
         
         for (const pair of arrayOfIndexesPairs) {
             if (!validateArrayOfIndexesPairs(pair)) {
-                throw new Error(`Invailed pairs: ${pair}`)
+                throw new Error(`Invailed pair: ${pair}`)
             }
             
             const [index1, index2] = pair;
@@ -35,7 +35,7 @@ class InputValidator {
         return true;
     }
 
-    static validateInputs(array1, array2, arrayOfIndexesPairs) {
+    static validateInputs(array1, array2, arrayOfIndexesPairs, upTokey, outDatedKey) {
       InputValidator.isInBoundaries(array1, array2, arrayOfIndexesPairs)
       const dataArrs = [array1, array2];
 
@@ -44,7 +44,11 @@ class InputValidator {
                 throw new Error(`${arr} is not a valid 2D array. All inner arrays should have the same length.`);
             }
         }
-        return true;
+
+      if (upTokey == null) {throw new Error (`upToDateTableKey is null, please assign value to it`)};
+      if (outDatedKey == null) {throw new Error (`outDatedTableKey is null, please assign value to it`)};
+
+      return true;
     }
 
     static validateAndExecute(func, ...args) {
