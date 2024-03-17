@@ -33,7 +33,7 @@ Executes the update and merge operations based on the provided parameters.
 
 Suppose we have two tables that need to be updated and merged:
 
-### UP TO DATE TABLE
+### UP-TO-DATE TABLE
 
 | id | name             | age |
 |----|------------------|-----|
@@ -44,7 +44,7 @@ Suppose we have two tables that need to be updated and merged:
   [ 2, 'alice', 20 ], ]
 ```
 
-### OUT DATED TABLE
+### OUT-DATED TABLE
 
 | id | name | age |
 |----|------|-----|
@@ -71,11 +71,17 @@ const updaterInstance = new TableUpdater(updateInfo);
 const res = updaterInstance.exec();
 console.log(res);
 ```
-#### The output
+#### OUTPUT TABLE
 ``` JavaScript
 [ [ 3, 'bob', 20 ],
   [ 1, 'john-updated-name', 30 ],
   [ 2, 'alice', 20 ] ]
 ```
+| id | name             | age |
+|----|------------------|-----|
+| 3  | bob              | 20  |
+| 1  | john-updated-name| 30  |
+| 2  | alice            | 20  |
+
 ## Contributions
 > Feel free to adjust and expand upon these suggestions based on your specific requirements and preferences.
