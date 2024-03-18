@@ -12,16 +12,16 @@ class InputValidator extends TableUpdater {
       }
       return false;
     }
-    
+
     static validateInputs() {
         const outDatedHeaders = Object.keys(this.outDatedTable[0]);
         const upToDateHeaders = Object.keys(this.upToDateTable[0]);
 
         if (!outDatedHeaders.includes(this.outDatedTableKey)) {
-            throw new Error(`Key: '${this.outDatedTableKey}' is not found. If you are sure that nothing is wrong with it, please check for capitalization and white spaces.\nHeaders: ${outDatedHeaders.map(e => `'${e}'`).join(", ")}`);
+            throw new Error(`Key '${this.outDatedTableKey}' is not found. If you are sure that nothing is wrong with it, please check for capitalization and white spaces.\nHeaders: ${outDatedHeaders.map(e => `'${e}'`).join(", ")}`);
         }
         if (!upToDateHeaders.includes(this.upToDateTableKey)) {
-            throw new Error(`Key: '${this.upToDateTableKey}' is not found. If you are sure that nothing is wrong with it, please check for capitalization and white spaces.\nHeaders: ${upToDateHeaders.map(e => `'${e}'`).join(", ")}`);
+            throw new Error(`Key '${this.upToDateTableKey}' is not found. If you are sure that nothing is wrong with it, please check for capitalization and white spaces.\nHeaders: ${upToDateHeaders.map(e => `'${e}'`).join(", ")}`);
         }
         if (!Validation.isValidArray(this.upToDateTable)) {
             throw new Error(`upToDateTable is not a valid 2D array\nupToDateTable:\n${this.upToDateTable}`);

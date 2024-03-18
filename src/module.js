@@ -47,7 +47,7 @@ class TableUpdater {
       this.merge();
     }
 
-    return this.outDatedTable;
+    return [Object.keys(this.outDatedTable), ...this.outDatedTable.map(row=> Object.values(row))];
   }
 
   update() {
