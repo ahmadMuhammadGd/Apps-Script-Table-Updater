@@ -1,4 +1,4 @@
-class InputValidator {
+class InputValidator extends TableUpdater {
     static is2DArray(arr) {
       const itsAnArray = Array.isArray(arr);
       const itsA2DArray = Array.isArray(arr[0]);
@@ -12,49 +12,35 @@ class InputValidator {
       }
       return false;
     }
+    
+    static validateInputs() {
+        const outDatedHeaders = Object.keys(this.outDatedTable[0]);
+        const upToDateHeaders = Object.keys(this.upToDateTable[0]);
 
-   
-    static isInBoundaries(arr1, arr2, arrayOfIndexesPairs) {
-        const arr1Len = arr1.length; 
-        const arr2Len = arr2.length; 
-        
-        const validateArrayOfIndexesPairs = (pair) =>
-            pair.length === 2 && pair.every(element => Number.isInteger(element));
-        
-        for (const pair of arrayOfIndexesPairs) {
-            if (!validateArrayOfIndexesPairs(pair)) {
-                throw new Error(`Invailed pair: ${pair}`)
-            }
-            
-            const [index1, index2] = pair;
-
-            if (index1 >= arr1Len || index2 >= arr2Len || index1 < 0 || index2 < 0) {
-                throw new Error(`Index pair ${pair} is out of boundries.\narray1 length is ${arr1Len}\narray2 length is ${arr2Len}\n`)
-            }
+        if (!outDatedHeaders.includes(this.outDatedTableKey)) {
+            throw new Error(`Key: '${this.outDatedTableKey}' is not found. If you are sure that nothing is wrong with it, please check for capitalization and white spaces.\nHeaders: ${outDatedHeaders.map(e => `'${e}'`).join(", ")}`);
         }
-        return true;
-    }
-
-    static validateInputs(array1, array2, arrayOfIndexesPairs, upTokey, outDatedKey) {
-      InputValidator.isInBoundaries(array1, array2, arrayOfIndexesPairs)
-      const dataArrs = [array1, array2];
-
-        for (const arr of dataArrs) {
-            if (!InputValidator.isValidArray(arr)) {
-                throw new Error(`${arr} is not a valid 2D array. All inner arrays should have the same length.`);
-            }
+        if (!upToDateHeaders.includes(this.upToDateTableKey)) {
+            throw new Error(`Key: '${this.upToDateTableKey}' is not found. If you are sure that nothing is wrong with it, please check for capitalization and white spaces.\nHeaders: ${upToDateHeaders.map(e => `'${e}'`).join(", ")}`);
+        }
+        if (!Validation.isValidArray(this.upToDateTable)) {
+            throw new Error(`upToDateTable is not a valid 2D array\nupToDateTable:\n${this.upToDateTable}`);
+        }
+        if (!Validation.isValidArray(this.outDatedTable)) {
+            throw new Error(`outDatedTable is not a valid 2D array\noutDatedTable:\n${this.outDatedTable}`);
+        }
+        if (!Validation.isValidArray(this.updateOnKeys) && this.updateTables) {
+            throw new Error(`updateOnKeys is not a valid 2D array\nupdateOnKeys:\n${this.updateOnKeys}`);
         }
 
-      if (upTokey == null) {throw new Error (`upToDateTableKey is null, please assign value to it`)};
-      if (outDatedKey == null) {throw new Error (`outDatedTableKey is null, please assign value to it`)};
-
-      return true;
-    }
-
-    static validateAndExecute(func, ...args) {
-        const validationResult = InputValidator.validateInputs(...args);
-        if (validationResult) {
-            func(...args);
-        }
+        this.updateOnKeys.forEach(pair => {
+            const [outDated, upToDate] = pair;
+            if (!upToDateHeaders.includes(upToDate)) {
+                throw new Error(`Key '${upToDate}' in pair: ${pair} is not found in the up-to-date headers array.`);
+            }
+            if (!outDatedHeaders.includes(outDated)) {
+                throw new Error(`Key '${outDated}' in pair: ${pair} is not found in the out-dated headers array.`);
+            }
+        });
     }
 }
