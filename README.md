@@ -1,4 +1,4 @@
-# AppScript Update and Merge Module
+# AppScript Update and Merge Module [BETA]
 
 This module facilitates update and merge operations within the Google AppScript environment. It provides a class called `TableUpdater` that handles updating and merging tables.
 
